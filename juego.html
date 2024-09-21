@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Me quiere, no me quiere: Juego de la Flor Virtual</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css">
+
+    <style>
+        body {
+            background-color: #c0fdff;
+            font-family: Arial;
+        }
+
+        h1 {
+            color: #ff0a54;
+            text-align: center;
+        }
+
+        #mensaje {
+            position: fixed;
+            right: 30%;
+            border-radius: 80px;
+            width: 170px;
+            height: 65px;
+            background: #a9def9;
+            padding: 20px 0 0 50px;
+            font-family: sans-serif;
+            font-weight: bold;
+            font-size: 20px;
+            z-index: 2;
+        }
+
+        #mensaje:after {
+            content: " ";
+            position: absolute;
+            width: 40px;
+            height: 60px;
+            top: 50px;
+            left: 50px;
+            border-radius: 20px;
+            box-shadow: inset 0px 0px #a9def9, inset -16px 0px 1px 2px #a9def9;
+            z-index: 1;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .mostrar {
+            display: block;
+        }
+
+        #botonJugar,
+        #botonReiniciar {
+            width: 200px;
+            height: 70px;
+            margin: 20px auto;
+            display: block;
+            font-size: 30px;
+            background-color: #99c1de;
+            color: #27187e;
+            border: 0;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        div.petalo {
+            background-color: #FFFFFF;
+            border-radius: 40px;
+            width: 80px;
+            height: 80px;
+            position: absolute;
+        }
+
+        #centro {
+            background-color: #DBA901;
+            border-radius: 50px;
+            width: 100px;
+            height: 100px;
+            top: 50%;
+            left: 50%;
+            position: absolute;
+            margin-top: -50px;
+            margin-left: -50px;
+        }
+
+        #tallo {
+            width: 15px;
+            height: 150px;
+            background-color: #006c67;
+            margin-top: -100px;
+            margin-left: 145px;
+        }
+
+        #hoja {
+            background-color: #006c67;
+            border-radius: 15px 0px 15px 0px;
+            width: 30px;
+            height: 30px;
+            margin-left: 160px;
+            margin-top: -90px;
+            position: absolute;
+        }
+
+        #flor {
+            width: 300px;
+            height: 300px;
+            background-color: transparent;
+            position: relative;
+        }
+
+        #p1 {
+            top: 70px;
+            left: 40px;
+        }
+
+        #p2 {
+            top: 40px;
+            left: 110px;
+        }
+
+        #p3 {
+            top: 70px;
+            left: 180px;
+        }
+
+        #p4 {
+            top: 145px;
+            left: 44px;
+        }
+
+        #p5 {
+            top: 180px;
+            left: 114px;
+        }
+
+        #p6 {
+            top: 140px;
+            left: 180px;
+        }
+
+        #figura {
+            position: relative;
+            background-color: transparent;
+            top: 0px;
+            left: 0px;
+            width: 300px;
+            margin: auto;
+        }
+
+        #cesped {
+            position: absolute;
+            width: 394px;
+            position: absolute;
+            bottom: 0px;
+        }
+
+        .manga {
+            background: #80ed99;
+            transform: rotate(45deg);
+            width: 50px;
+            height: 50px;
+            display: inline-block;
+            border-radius: 5px;
+        }
+
+        .fondo_manga {
+            background: #80ed99;
+            height: 50px;
+            left: -8px;
+            position: absolute;
+            top: 25px;
+            width: 394px;
+            border-radius: 0 0 10px 10px;
+        }
+
+        #postit {
+            position: fixed;
+            background: #e9ff70;
+            width: 200px;
+            height: 200px;
+            margin: 20px;
+            right: 10px;
+            padding: 20px;
+        }
+
+        /* Estilos para el modal */
+        #modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        #modalContent {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        #modalContent button {
+            margin: 10px;
+            padding: 10px;
+            font-size: 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        #botonReiniciar {
+            background-color: #6a9e9a;
+            color: white;
+        }
+
+        #botonSalir {
+            background-color: #d9534f;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div id="mensaje" class="hidden">
+        <span id="texto_mensaje"></span>
+    </div>
+    <div id="intro" style="text-align: center;">
+        <h3>Juego de la Flor Virtual <span id="minombre"></span> &#128512; &#128151;</h3>
+    </div>
+    <div id="juego" class="hidden">
+        <div id="postit">
+            <h2>Tarea:</h2>
+            <p>
+                Haz click en el pétalo para quitar los pétalos y click en el centro para cambiar el color aleatoriamente.
+            </p>
+        </div>
+        <div id="figura">
+            <div id="flor">
+                <div id="p1" class="petalo animated fadeIn"></div>
+                <div id="p2" class="petalo animated fadeIn"></div>
+                <div id="p3" class="petalo animated fadeIn"></div>
+                <div id="p4" class="petalo animated fadeIn"></div>
+                <div id="p5" class="petalo animated fadeIn"></div>
+                <div id="p6" class="petalo animated fadeIn"></div>
+                <div id="centro" class="animated pulse infinite"></div>
+            </div>
+            <div id="cesped">
+                <div class="manga"></div>
+                <div class="manga"></div>
+                <div class="manga"></div>
+                <div class="manga"></div>
+                <div class="manga"></div>
+                <div class="manga"></div>
+                <div class="manga"></div>
+                <div class="fondo_manga"></div>
+            </div>
+            <div id="tallo"></div>
+            <div id="hoja"></div>
+        </div>
+        <div style="padding: 1rem;">
+            <button id="botonReiniciar">Reiniciar juego</button>
+        </div>
+    </div>
+
+    <!-- Modal para terminar o reiniciar -->
+    <div id="modal">
+        <div id="modalContent">
+            <p>Tu sonrisa es más bella que un campo de girasoles</p>
+            <button id="botonSeguir">Seguir jugando</button>
+            <button id="botonSalir">Salir</button>
+        </div>
+    </div>
+
+    <script>
+        window.onload = init;
+        var petalos;
+        var boton_jugar;
+        var valores;
+        var alterna = true; // Bandera para alternar entre "Me quiere" y "No me quiere"
+        var petalos_restantes;
+
+        document.addEventListener("DOMContentLoaded", function() {
+            var nombre = localStorage.getItem("nombreJugador");
+            if (nombre) {
+                document.getElementById("minombre").textContent = nombre;
+            }
+        });
+
+        function init() {
+            petalos = document.getElementsByClassName("petalo");
+            petalos_restantes = petalos.length; // Contamos los pétalos que faltan quitar
+            asignarEvento();
+            abrirJuego();
+
+            document.getElementById("botonReiniciar").onclick = reiniciarJuego;
+            document.getElementById("botonSeguir").onclick = seguirJugando;
+            document.getElementById("botonSalir").onclick = salirJuego;
+
+            // Asignar el evento al centro
+            document.getElementById("centro").onclick = cambiarColoresPetalos;
+        }
+
+        function asignarValores() {
+            var numero_aleatorio = Math.round(Math.random() * 10);
+            var moneda = numero_aleatorio > 5;
+            valores = [];
+            for (var i = 0; i < petalos.length; i++) {
+                valores[i] = moneda;
+                moneda = !moneda; // Alternar "Me quiere" y "No me quiere"
+            }
+        }
+
+        function abrirJuego() {
+            var ventana_juego = document.getElementById("juego");
+            ventana_juego.className = "animated fadeIn";
+            asignarValores();
+        }
+
+        function asignarEvento() {
+            for (var i = 0; i < petalos.length; i++) {
+                petalos[i].addEventListener("click", animar);
+            }
+        }
+
+        function colorAleatorio() {
+            var r = Math.round(Math.random() * 255);
+            var g = Math.round(Math.random() * 255);
+            var b = Math.round(Math.random() * 255);
+            return "rgb(" + r + "," + g + "," + b + ")";
+        }
+
+        // Cambiar el color de todos los pétalos al mismo color
+        function cambiarColoresPetalos() {
+            var color = colorAleatorio(); // Un solo color aleatorio
+            for (var i = 0; i < petalos.length; i++) {
+                petalos[i].style.backgroundColor = color; // Aplicar el mismo color a todos los pétalos
+            }
+        }
+
+        function animar(event) {
+            var id_petalo = event.target.id;
+            var petalo = document.getElementById("" + id_petalo);
+            petalo.className = "petalo animated fadeOutDown"; // Quitar el pétalo con animación
+            petalos_restantes--; // Reducimos el conteo de pétalos restantes
+            validarJugada(id_petalo);
+            if (petalos_restantes === 0) {
+                mostrarModal(); // Mostrar el modal cuando no queden pétalos
+            }
+        }
+
+        function validarJugada(petalo) {
+            var indice = parseInt(petalo.substr(1));
+            var str;
+
+            if (alterna) {
+                str = "Me quiere";
+            } else {
+                str = "No me quiere";
+            }
+
+            alterna = !alterna; // Alternar el texto en la siguiente jugada
+            texto_mensaje.innerHTML = str;
+            mensaje.className = "mostrar animated fadeIn";
+            setTimeout(() => {
+                mensaje.className = "hidden";
+            }, 1000);
+        }
+
+        function mostrarModal() {
+            modal.style.display = "flex";
+        }
+
+        function reiniciarJuego() {
+            for (var i = 0; i < petalos.length; i++) {
+                petalos[i].style.visibility = "visible";
+                petalos[i].className = "petalo animated fadeIn"; // Reiniciar la animación
+                petalos[i].style.backgroundColor = ""; // Restaurar el color original
+            }
+
+            petalos_restantes = petalos.length; // Reiniciamos el conteo de pétalos
+            document.getElementById("juego").classList.remove("hidden");
+            modal.style.display = "none";
+        }
+
+        function seguirJugando() {
+            reiniciarJuego();
+            modal.style.display = "none";
+        }
+
+        function salirJuego() {
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+
+
+</html>

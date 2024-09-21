@@ -1983,3 +1983,13 @@ body {
     opacity: 1;
   }
 }
+
+
+#minombre {
+  position: absolute;
+  color: rgba(255, 218, 218, 0.801);
+  font-size: 2em;
+  text-align: center;
+  z-index: 20;
+  animation: bounceIn 1s; /* Añade animación */
+}
