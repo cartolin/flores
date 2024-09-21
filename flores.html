@@ -503,6 +503,7 @@
 
     var audio = document.getElementById('background-audio');
     var playButton = document.getElementById('play-button');
+    var circulo = document.getElementById('circulo');
 
 
     // Función para iniciar el audio
@@ -512,10 +513,9 @@
       });
     }
 
-    // Evento para reproducir el audio al hacer clic en el botón
     playButton.addEventListener('click', function () {
       playAudio();
-      playButton.style.display = 'none'; // Ocultar botón después de hacer clic
+      playButton.style.display = 'none';
       circulo.style.display = 'none';
     });
 
