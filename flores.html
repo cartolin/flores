@@ -7,6 +7,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.1/animate.min.css">
 </head>
 <body class="container">
+  <audio id="background-audio" loop>
+    <source src="musica.mp3" type="audio/mpeg">
+  </audio>
+  <button id="play-button">Iniciar Música</button>
   <h3 id="minombre" class="animated bounceIn"></h3>
   <div class="night"></div>
   <div class="flowers">
@@ -436,6 +440,7 @@
   <script>
     onload = () => {
         document.body.classList.remove("container");
+        playButton.style.display = 'block';
     };
 
     document.addEventListener("DOMContentLoaded", function() {
@@ -443,6 +448,33 @@
         if (nombre) {
             document.getElementById("minombre").textContent = "FLORES AMARILLAS PARA TI "+ nombre.toUpperCase();
         }
+    });
+
+    var audio = document.getElementById('background-audio');
+        var playButton = document.getElementById('play-button');
+
+
+    // Función para iniciar el audio
+    function playAudio() {
+        audio.play().catch(function(error) {
+            console.log("Error al reproducir el audio: ", error);
+        });
+    }
+
+    // Evento para reproducir el audio al hacer clic en el botón
+    playButton.addEventListener('click', function() {
+        playAudio();
+        playButton.style.display = 'none'; // Ocultar botón después de hacer clic
+    });
+
+    // Detener el audio al salir de la página
+    window.addEventListener('beforeunload', function() {
+        audio.pause();
+        audio.currentTime = 0; // Reinicia el audio
+    });
+
+    document.body.addEventListener('click', function() {
+        playAudio();
     });
 
   </script>
