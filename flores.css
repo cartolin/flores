@@ -2007,7 +2007,7 @@ body {
   font-size: 1em;
   color: rgba(255, 255, 255, 0.705);
   z-index: 30;
-  animation: move 12s linear infinite;
+  animation: move 50s linear infinite;
 }
 
 @keyframes move {
