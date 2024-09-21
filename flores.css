@@ -1987,13 +1987,13 @@ body {
 
 #minombre {
   position: absolute;
+  top: 20px;
   color: rgba(255, 218, 218, 0.801);
   font-size: 2em;
   text-align: center;
   z-index: 20;
-  animation: bounceIn 1s; /* Añade animación */
+  animation: bounceIn 1s;
 }
-
 
 #circulo {
   position: fixed; /* Cambiar a fixed para que flote */
